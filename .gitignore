@@ -19,6 +19,10 @@ dist/
 build/
 *.egg-info/
 
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
 # Environment variables
 .env
 .env.local
