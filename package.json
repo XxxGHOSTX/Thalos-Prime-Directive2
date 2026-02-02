@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "Thalos Prime Directive 2 - A Node.js application with CI/CD pipeline",
   "main": "src/index.js",
+  "type": "module",
   "scripts": {
     "start": "node src/index.js",
-    "test": "jest --coverage",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest --coverage",
     "lint": "eslint src/ tests/",
     "lint:fix": "eslint src/ tests/ --fix",
     "format": "prettier --write \"src/**/*.js\" \"tests/**/*.js\"",

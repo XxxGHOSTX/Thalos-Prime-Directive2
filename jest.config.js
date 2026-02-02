@@ -1,15 +1,10 @@
 export default {
   testEnvironment: 'node',
   coverageDirectory: 'coverage',
-  collectCoverageFrom: [
-    'src/**/*.js',
-    '!src/**/*.test.js',
-  ],
-  testMatch: [
-    '**/tests/**/*.test.js',
-  ],
-  transform: {},
+  collectCoverageFrom: ['src/**/*.js', '!src/**/*.test.js'],
+  testMatch: ['**/tests/**/*.test.js'],
   moduleFileExtensions: ['js'],
+  transform: {},
   coverageThreshold: {
     global: {
       branches: 50,
