@@ -3,7 +3,7 @@ Task Routes
 RESTful API endpoints for task management
 """
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, status
 from pydantic import BaseModel
 from typing import List, Optional
 from uuid import UUID
@@ -13,6 +13,7 @@ router = APIRouter()
 
 class TaskCreateRequest(BaseModel):
     """Request model for creating a task"""
+
     title: str
     description: str
     assignee_id: Optional[str] = None
@@ -20,12 +21,14 @@ class TaskCreateRequest(BaseModel):
 
 class TaskUpdateRequest(BaseModel):
     """Request model for updating a task"""
+
     status: Optional[str] = None
     assignee_id: Optional[str] = None
 
 
 class TaskResponse(BaseModel):
     """Response model for task data"""
+
     id: str
     title: str
     description: str
@@ -57,7 +60,7 @@ async def get_tasks():
             "assignee_id": None,
             "created_at": "2024-01-01T00:00:00Z",
             "updated_at": "2024-01-01T00:00:00Z",
-        }
+        },
     ]
 
 

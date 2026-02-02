@@ -3,7 +3,7 @@ User Routes
 RESTful API endpoints for user management
 """
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, status
 from pydantic import BaseModel, EmailStr
 from typing import List
 from uuid import UUID
@@ -13,12 +13,14 @@ router = APIRouter()
 
 class UserCreateRequest(BaseModel):
     """Request model for creating a user"""
+
     email: EmailStr
     name: str
 
 
 class UserResponse(BaseModel):
     """Response model for user data"""
+
     id: str
     email: str
     name: str

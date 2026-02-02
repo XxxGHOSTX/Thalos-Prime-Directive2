@@ -11,7 +11,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:password@localhost:5432/thalos_prime")
+DATABASE_URL = os.getenv(
+    "DATABASE_URL", "postgresql://postgres:password@localhost:5432/thalos_prime"
+)
 
 engine = create_engine(DATABASE_URL, echo=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

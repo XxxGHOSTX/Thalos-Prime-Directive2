@@ -16,6 +16,7 @@ Base = declarative_base()
 
 class TaskStatusEnum(str, enum.Enum):
     """Task status enumeration for database"""
+
     PENDING = "PENDING"
     IN_PROGRESS = "IN_PROGRESS"
     COMPLETED = "COMPLETED"
@@ -24,6 +25,7 @@ class TaskStatusEnum(str, enum.Enum):
 
 class UserModel(Base):
     """User database model"""
+
     __tablename__ = "users"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -37,6 +39,7 @@ class UserModel(Base):
 
 class TaskModel(Base):
     """Task database model"""
+
     __tablename__ = "tasks"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)

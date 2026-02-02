@@ -12,6 +12,7 @@ from uuid import UUID, uuid4
 
 class TaskStatus(str, Enum):
     """Task status enumeration"""
+
     PENDING = "PENDING"
     IN_PROGRESS = "IN_PROGRESS"
     COMPLETED = "COMPLETED"
@@ -26,7 +27,7 @@ class TaskId:
 @dataclass
 class Task:
     """Task domain entity"""
-    
+
     id: TaskId
     title: str
     description: str
@@ -36,12 +37,7 @@ class Task:
     updated_at: datetime
 
     @classmethod
-    def create(
-        cls,
-        title: str,
-        description: str,
-        assignee_id: Optional[UUID] = None
-    ) -> 'Task':
+    def create(cls, title: str, description: str, assignee_id: Optional[UUID] = None) -> "Task":
         """Factory method to create a new task"""
         now = datetime.utcnow()
         return cls(

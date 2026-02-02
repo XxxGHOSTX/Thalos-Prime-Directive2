@@ -5,7 +5,6 @@ Represents a user in the system following DDD principles
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional
 from uuid import UUID, uuid4
 
 
@@ -17,7 +16,7 @@ class UserId:
 @dataclass
 class User:
     """User domain entity"""
-    
+
     id: UserId
     email: str
     name: str
@@ -25,7 +24,7 @@ class User:
     updated_at: datetime
 
     @classmethod
-    def create(cls, email: str, name: str) -> 'User':
+    def create(cls, email: str, name: str) -> "User":
         """Factory method to create a new user"""
         now = datetime.utcnow()
         return cls(
