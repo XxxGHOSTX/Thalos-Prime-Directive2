@@ -98,32 +98,34 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start server
-const PORT = process.env.APP_PORT || 8080;
-const HOST = process.env.APP_HOST || '0.0.0.0';
+// Start server only if not required as a module
+if (require.main === module) {
+  const PORT = process.env.APP_PORT || 8080;
+  const HOST = process.env.APP_HOST || '0.0.0.0';
 
-const server = app.listen(PORT, HOST, () => {
-  logger.info(`Thalos Prime Directive 2 started on ${HOST}:${PORT}`);
-  logger.info(`Environment: ${process.env.APP_ENV || 'development'}`);
-  logger.info(`Metrics enabled: ${process.env.ENABLE_METRICS === 'true'}`);
-});
-
-// Graceful shutdown
-const gracefulShutdown = (signal) => {
-  logger.info(`${signal} received, shutting down gracefully...`);
-  server.close(() => {
-    logger.info('Server closed');
-    process.exit(0);
+  const server = app.listen(PORT, HOST, () => {
+    logger.info(`Thalos Prime Directive 2 started on ${HOST}:${PORT}`);
+    logger.info(`Environment: ${process.env.APP_ENV || 'development'}`);
+    logger.info(`Metrics enabled: ${process.env.ENABLE_METRICS === 'true'}`);
   });
 
-  // Force shutdown after 10 seconds
-  setTimeout(() => {
-    logger.error('Forced shutdown after timeout');
-    process.exit(1);
-  }, 10000);
-};
+  // Graceful shutdown
+  const gracefulShutdown = (signal) => {
+    logger.info(`${signal} received, shutting down gracefully...`);
+    server.close(() => {
+      logger.info('Server closed');
+      process.exit(0);
+    });
 
-process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
-process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+    // Force shutdown after 10 seconds
+    setTimeout(() => {
+      logger.error('Forced shutdown after timeout');
+      process.exit(1);
+    }, 10000);
+  };
+
+  process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+  process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+}
 
 module.exports = app;

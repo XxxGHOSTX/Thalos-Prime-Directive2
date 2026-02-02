@@ -2,11 +2,6 @@ const request = require('supertest');
 const app = require('../../src/app');
 
 describe('Health Endpoints', () => {
-  afterAll((done) => {
-    // Close server after tests
-    setTimeout(() => done(), 100);
-  });
-
   describe('GET /health', () => {
     it('should return 200 and health status', async () => {
       const response = await request(app)

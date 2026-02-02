@@ -2,10 +2,6 @@ const request = require('supertest');
 const app = require('../../src/app');
 
 describe('API Endpoints', () => {
-  afterAll((done) => {
-    setTimeout(() => done(), 100);
-  });
-
   describe('GET /', () => {
     it('should return application info', async () => {
       const response = await request(app)

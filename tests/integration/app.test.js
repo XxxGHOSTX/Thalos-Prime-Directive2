@@ -1,7 +1,13 @@
+// Integration tests - only run when TEST_URL is set or app is running
 const request = require('supertest');
 
 describe('Integration Tests', () => {
-  const baseUrl = process.env.TEST_URL || 'http://localhost:8080';
+  const baseUrl = process.env.TEST_URL;
+
+  if (!baseUrl) {
+    it.skip('skipping integration tests - set TEST_URL to run', () => {});
+    return;
+  }
 
   describe('Application Startup', () => {
     it('should respond to health checks', async () => {
