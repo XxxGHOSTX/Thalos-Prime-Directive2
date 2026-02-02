@@ -16,7 +16,7 @@ router.get('/ready', (req, res) => {
   // Check if the application is ready to serve traffic
   // Add checks for database connections, external services, etc.
   const checks = {
-    server: 'ok',
+    server: 'ok'
     // database: checkDatabase(),
     // cache: checkCache(),
   };

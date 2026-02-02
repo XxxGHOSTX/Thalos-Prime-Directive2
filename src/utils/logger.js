@@ -22,9 +22,7 @@ const createLogger = () => {
   return winston.createLogger({
     level: logLevel,
     format: winston.format.combine(...formats),
-    transports: [
-      new winston.transports.Console()
-    ],
+    transports: [new winston.transports.Console()],
     exitOnError: false
   });
 };

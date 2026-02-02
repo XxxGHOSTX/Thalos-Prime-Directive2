@@ -80,7 +80,7 @@ app.use((req, res) => {
 });
 
 // Error handling middleware
-app.use((err, req, res, next) => {
+app.use((err, req, res, _next) => {
   logger.error({
     error: err.message,
     stack: err.stack,
@@ -91,9 +91,10 @@ app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   res.status(statusCode).json({
     error: err.name || 'Internal Server Error',
-    message: process.env.APP_ENV === 'production' 
-      ? 'An error occurred processing your request'
-      : err.message,
+    message:
+      process.env.APP_ENV === 'production'
+        ? 'An error occurred processing your request'
+        : err.message,
     timestamp: new Date().toISOString()
   });
 });
@@ -110,7 +111,7 @@ if (require.main === module) {
   });
 
   // Graceful shutdown
-  const gracefulShutdown = (signal) => {
+  const gracefulShutdown = signal => {
     logger.info(`${signal} received, shutting down gracefully...`);
     server.close(() => {
       logger.info('Server closed');

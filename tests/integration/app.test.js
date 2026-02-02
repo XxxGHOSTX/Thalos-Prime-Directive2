@@ -11,9 +11,7 @@ describe('Integration Tests', () => {
 
   describe('Application Startup', () => {
     it('should respond to health checks', async () => {
-      const response = await request(baseUrl)
-        .get('/health')
-        .expect(200);
+      const response = await request(baseUrl).get('/health').expect(200);
 
       expect(response.body.status).toBe('ok');
     });
@@ -29,17 +27,12 @@ describe('Integration Tests', () => {
   describe('API Flow', () => {
     it('should handle complete API flow', async () => {
       // Get API status
-      const statusResponse = await request(baseUrl)
-        .get('/api/status')
-        .expect(200);
+      const statusResponse = await request(baseUrl).get('/api/status').expect(200);
       expect(statusResponse.body.api).toBe('operational');
 
       // Echo test
       const echoData = { test: 'integration' };
-      const echoResponse = await request(baseUrl)
-        .post('/api/echo')
-        .send(echoData)
-        .expect(200);
+      const echoResponse = await request(baseUrl).post('/api/echo').send(echoData).expect(200);
       expect(echoResponse.body.received).toEqual(echoData);
     });
   });
