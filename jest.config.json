@@ -1,0 +1,11 @@
+{
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+        "**/*.js",
+        "!node_modules/**",
+        "!coverage/**",
+        "!eslint.config.js",
+        "!jest.config.json"
+    ],
+    "coveragePathIgnorePatterns": ["/node_modules/", "/coverage/"]
+}
