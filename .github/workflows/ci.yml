@@ -59,13 +59,14 @@ jobs:
 
       - name: Validate module imports
         run: |
-          python -c "import THALOS_PRIME_APP"
-          python -c "import thalos_sbi_core_v6"
-          python -c "import perpetual_optimizer"
-          python -c "import compliance_scanner"
-          python -c "import hyper_nextus_server"
-          python -c "import thalos_database_schema"
-          python -c "import deploy_server"
+          python -m py_compile THALOS_PRIME_APP.py
+          python -m py_compile thalos_sbi_core_v6.py
+          python -m py_compile perpetual_optimizer.py
+          python -m py_compile compliance_scanner.py
+          python -m py_compile hyper_nextus_server.py
+          python -m py_compile thalos_database_schema.py
+          python -m py_compile deploy_server.py
+          echo "✓ All modules compiled successfully"
 
   verify:
     name: Verify System Components

@@ -16,6 +16,9 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# Compliance penalty per violation (subtracted from base score of 100)
+COMPLIANCE_PENALTY = 10
+
 
 class ThalosGuard:
     """Enforces architectural purity and naming conventions."""
@@ -33,7 +36,7 @@ class ThalosGuard:
         for filename in os.listdir(self.root_dir):
             if filename.endswith(".py"):
                 if not self._validate_file(filename):
-                    compliance_score -= 10
+                    compliance_score -= COMPLIANCE_PENALTY
 
         logger.info(f"Scan complete. Ecosystem Compliance Score: {compliance_score}%")
 

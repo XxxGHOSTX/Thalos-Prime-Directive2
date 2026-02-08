@@ -17,6 +17,10 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# Complexity threshold for flagging modules requiring refactoring
+# Based on industry standard that complexity > 20 indicates high maintenance risk
+COMPLEXITY_THRESHOLD = 20
+
 
 class CodebaseAuditor:
     """Analyzes the structural integrity and complexity of the source code."""
@@ -71,7 +75,7 @@ def optimization_loop():
         for module in target_modules:
             if os.path.exists(module):
                 score = auditor.calculate_complexity(module)
-                if score > 20:
+                if score > COMPLEXITY_THRESHOLD:
                     logger.warning(
                         f"Logic Bloat detected in {module} (Complexity: {score}). Flagging for refactor."
                     )

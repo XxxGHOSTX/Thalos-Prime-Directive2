@@ -20,7 +20,6 @@ COPY *.html .
 EXPOSE 5000 5001
 
 # Set environment variables
-ENV THALOS_SECRET=primordial_entropy_key_v1_0_0
 ENV PYTHONUNBUFFERED=1
 
 # Run the orchestrator
