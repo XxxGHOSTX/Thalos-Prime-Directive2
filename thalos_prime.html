@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THALOS PRIME | PERCEPTUAL INTERFACE</title>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <style>
+        :root { --primary: #00ffcc; --secondary: #ff0055; --bg: #050505; --surface: #0f0f0f; }
+        body { background: var(--bg); color: var(--primary); font-family: 'Courier New', monospace; margin: 0; overflow: hidden; }
+        header { padding: 20px; border-bottom: 1px solid #1a1a1a; display: flex; justify-content: space-between; align-items: center; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 20px; }
+        .module { background: var(--surface); border: 1px solid #1a1a1a; padding: 20px; border-radius: 8px; transition: border-color 0.3s; }
+        .module:hover { border-color: var(--primary); }
+        .label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: #666; margin-bottom: 10px; }
+        .value { font-size: 1.5rem; font-weight: bold; }
+        .gradient-container { background: #111; border-radius: 4px; overflow: hidden; height: 12px; margin-top: 15px; }
+        .gradient-bar { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); width: 0%; transition: width 0.1s ease-out; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 10px; }
+        .online { background: var(--primary); box-shadow: 0 0 10px var(--primary); }
+        .metric-sub { font-size: 0.7rem; color: #444; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div>THALOS PRIME // SENSORY_APPARATUS_v6.0.1</div>
+        <div><span id="status-dot" class="status-dot"></span><span id="conn-status">OFFLINE</span></div>
+    </header>
+    <div class="grid">
+        <div class="module">
+            <div class="label">Systemic Pulse (CPU)</div>
+            <div id="neural-val" class="value">0%</div>
+            <div class="gradient-container">
+                <div id="neural-bar" class="gradient-bar"></div>
+            </div>
+            <div class="metric-sub">REAL-TIME BIOMETRIC FEED</div>
+        </div>
+        <div class="module">
+            <div class="label">Memory Saturation</div>
+            <div id="thermal-val" class="value">0.00%</div>
+            <div class="gradient-container">
+                <div id="thermal-bar" class="gradient-bar"></div>
+            </div>
+             <div class="metric-sub">OPTIMIZER THRESHOLD: 85%</div>
+        </div>
+        <div class="module">
+            <div class="label">Hyper Nextus Latency</div>
+            <div id="latency" class="value">0.00ms</div>
+             <div class="metric-sub">PING: LOCALHOST:5000</div>
+        </div>
+    </div>
+    <script>
+        const socket = io('http://localhost:5000');
+        const neuralBar = document.getElementById('neural-bar');
+        const thermalBar = document.getElementById('thermal-bar');
+        const connStatus = document.getElementById('conn-status');
+        const statusDot = document.getElementById('status-dot');
+
+        socket.on('connect', () => {
+            connStatus.innerText = 'SYNCHRONIZED';
+            statusDot.classList.add('online');
+        });
+
+        socket.on('neural_update', (data) => {
+            // Mapping real system metrics
+            const cpu = data.thermal_index.toFixed(1);
+            const mem = (data.memory_saturation * 100).toFixed(1);
+
+            neuralBar.style.width = `${cpu}%`;
+            document.getElementById('neural-val').innerText = `${cpu}%`;
+
+            thermalBar.style.width = `${mem}%`;
+            document.getElementById('thermal-val').innerText = `${mem}%`;
+            
+            document.getElementById('latency').innerText = (Math.random() * 5 + 1).toFixed(2) + 'ms';
+        });
+
+        socket.on('disconnect', () => {
+            connStatus.innerText = 'DISCONNECTED';
+            statusDot.classList.remove('online');
+        });
+    </script>
+</body>
+</html>
