@@ -1,0 +1,33 @@
+{
+    "name": "thalos-prime-directive2",
+    "version": "1.0.0",
+    "description": "A web-based implementation of the Thalos Prime Directive 2 system",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js",
+        "dev": "node server.js",
+        "lint": "eslint .",
+        "format": "prettier --write .",
+        "format:check": "prettier --check .",
+        "test": "jest --coverage"
+    },
+    "keywords": [
+        "thalos",
+        "web",
+        "application"
+    ],
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "express": "^4.18.2",
+        "express-rate-limit": "^7.1.5"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.0.0",
+        "eslint": "^9.0.0",
+        "globals": "^15.0.0",
+        "jest": "^29.7.0",
+        "prettier": "^3.2.5",
+        "supertest": "^6.3.4"
+    }
+}
