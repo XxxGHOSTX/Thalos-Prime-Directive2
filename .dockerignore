@@ -6,3 +6,7 @@ coverage
 .gitignore
 *.md
 *.test.js
+__tests__
+.eslintrc*
+.prettierrc*
+jest.config.json
