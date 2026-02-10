@@ -1,23 +1,26 @@
-# Use Node.js LTS version
-FROM node:18-alpine
+# THALOS PRIME Dockerfile
+FROM python:3.11-slim
 
-# Set working directory
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install dependencies
-RUN npm ci --omit=dev
+# Copy requirements and install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application files
-COPY . .
+COPY *.py .
+COPY *.html .
 
-# Expose port
-EXPOSE 3000
+# Expose ports
+EXPOSE 5000 5001
 
-# Set environment to production
-ENV NODE_ENV=production
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
 
-# Start the application
-CMD ["node", "server.js"]
+# Run the orchestrator
+CMD ["python", "deploy_server.py"]
