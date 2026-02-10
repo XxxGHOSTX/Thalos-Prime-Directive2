@@ -207,7 +207,7 @@ black .
 
 ### Run tests:
 ```bash
-python test_system.py
+python -m compileall .
 ```
 
 ## Environment Variables
