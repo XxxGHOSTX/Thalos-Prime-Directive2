@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: thalos-prime-config
+  namespace: thalos-prime
+data:
+  APP_ENV: "production"
+  APP_PORT: "8080"
+  APP_HOST: "0.0.0.0"
+  LOG_LEVEL: "info"
+  LOG_FORMAT: "json"
+  ENABLE_METRICS: "true"
+  METRICS_PORT: "9090"
+  ENABLE_HEALTH_CHECKS: "true"
+  ENABLE_CORS: "true"
+  RATE_LIMIT_WINDOW: "900000"
+  RATE_LIMIT_MAX_REQUESTS: "100"

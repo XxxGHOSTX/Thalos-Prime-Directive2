@@ -1,26 +1,42 @@
-# THALOS PRIME Dockerfile
-FROM python:3.11-slim
+# Build stage
+FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
+# Copy package files
+COPY package*.json ./
 
-# Copy requirements and install Python dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Install dependencies
+RUN npm ci --omit=dev
 
-# Copy application files
-COPY *.py .
-COPY *.html .
+# Production stage
+FROM node:18-alpine
 
-# Expose ports
-EXPOSE 5000 5001
+# Set production environment
+ENV NODE_ENV=production
 
-# Set environment variables
-ENV PYTHONUNBUFFERED=1
+# Create app user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
 
-# Run the orchestrator
-CMD ["python", "deploy_server.py"]
+WORKDIR /app
+
+# Copy dependencies from builder
+COPY --from=builder --chown=nodejs:nodejs /app/node_modules ./node_modules
+
+# Copy application code
+COPY --chown=nodejs:nodejs src ./src
+COPY --chown=nodejs:nodejs package*.json ./
+
+# Switch to non-root user
+USER nodejs
+
+# Expose port
+EXPOSE 8080
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:8080/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
+
+# Start application
+CMD ["node", "src/app.js"]

@@ -1,85 +1,166 @@
-# THALOS PRIME: Integrated Source Code Ledger
+# Thalos Prime Directive 2
 
-## Overview
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![Docker](https://img.shields.io/badge/Docker-Ready-brightgreen.svg)](Dockerfile)
+[![Production Ready](https://img.shields.io/badge/Production-Ready-success.svg)]()
 
-THALOS PRIME is a sophisticated biocomputing ecosystem comprising multiple interconnected modules designed for high-velocity processing, neural simulation, and autonomous system optimization.
+A production-ready, cloud-native application framework designed for scalability, reliability, and ease of deployment.
 
-## Architecture
+## 🚀 Features
 
-### Tier 1: Perceptual Interface
-- **thalos_prime.html**: Real-time WebSocket-based dashboard displaying system vitals
+- **Production-Ready Infrastructure**: Complete deployment setup with Docker and Kubernetes
+- **CI/CD Pipeline**: Automated testing and deployment workflows
+- **Health Monitoring**: Built-in health checks and monitoring endpoints
+- **Security First**: Security best practices and vulnerability scanning
+- **Cloud-Native**: Designed for containerized environments
+- **Scalable Architecture**: Horizontal scaling support
+- **Comprehensive Documentation**: Detailed guides for setup and deployment
 
-### Tier 2: Core Processing
-- **THALOS_PRIME_APP.py**: Regulatory Gateway (Flask/SocketIO server on port 5000)
-- **thalos_sbi_core_v6.py**: Simulation-Based Intelligence engine
-- **hyper_nextus_server.py**: High-velocity TCP server (port 5001)
+## 📋 Prerequisites
 
-### Tier 3: Autonomous Systems
-- **perpetual_optimizer.py**: Self-healing daemon monitoring code complexity
-- **compliance_scanner.py**: Thalos Guard enforcing coding standards
-- **thalos_database_schema.py**: SQLAlchemy persistence layer
+- Docker 20.10+
+- Docker Compose 2.0+ (for local development)
+- Kubernetes 1.20+ (for production deployment)
+- kubectl configured (for Kubernetes deployment)
 
-### Orchestration
-- **deploy_server.py**: Multi-process lifecycle manager
+## 🏗️ Project Structure
 
-## Installation
-
-```bash
-# Install dependencies
-pip install -r requirements.txt
-
-# Initialize database
-python thalos_database_schema.py
+```
+.
+├── src/                    # Application source code
+├── tests/                  # Test files
+├── config/                 # Configuration files
+├── k8s/                    # Kubernetes manifests
+├── docs/                   # Documentation
+├── .github/workflows/      # CI/CD workflows
+├── Dockerfile              # Container definition
+├── docker-compose.yml      # Local development setup
+└── README.md               # This file
 ```
 
-## Usage
+## 🚀 Quick Start
 
-### Running the Full Ecosystem
+### Local Development with Docker
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/XxxGHOSTX/Thalos-Prime-Directive2.git
+   cd Thalos-Prime-Directive2
+   ```
+
+2. Copy the environment template:
+   ```bash
+   cp .env.example .env
+   ```
+
+3. Start the application:
+   ```bash
+   docker-compose up -d
+   ```
+
+4. Access the application:
+   - Application: http://localhost:8080
+   - Health Check: http://localhost:8080/health
+
+### Production Deployment with Kubernetes
+
+1. Build and push the Docker image:
+   ```bash
+   docker build -t thalos-prime:latest .
+   docker tag thalos-prime:latest your-registry/thalos-prime:latest
+   docker push your-registry/thalos-prime:latest
+   ```
+
+2. Update the image in Kubernetes manifests:
+   ```bash
+   # Edit k8s/deployment.yaml to use your image
+   ```
+
+3. Deploy to Kubernetes:
+   ```bash
+   kubectl apply -f k8s/
+   ```
+
+4. Verify deployment:
+   ```bash
+   kubectl get pods -l app=thalos-prime
+   kubectl get services thalos-prime
+   ```
+
+## 🔧 Configuration
+
+Configuration is managed through environment variables. See `.env.example` for all available options.
+
+Key configuration parameters:
+
+- `APP_ENV`: Application environment (development, staging, production)
+- `APP_PORT`: Application port (default: 8080)
+- `LOG_LEVEL`: Logging level (debug, info, warn, error)
+- `ENABLE_METRICS`: Enable Prometheus metrics (true/false)
+
+## 📊 Monitoring & Health Checks
+
+### Health Check Endpoints
+
+- `/health`: Basic health check
+- `/health/ready`: Readiness probe
+- `/health/live`: Liveness probe
+- `/metrics`: Prometheus metrics (if enabled)
+
+### Monitoring
+
+The application exposes Prometheus-compatible metrics on the `/metrics` endpoint. Configure your monitoring system to scrape this endpoint.
+
+## 🧪 Testing
+
+Run tests locally:
+
 ```bash
-python deploy_server.py
+# Unit tests
+docker-compose run --rm app npm test
+
+# Integration tests
+docker-compose run --rm app npm run test:integration
+
+# All tests
+docker-compose run --rm app npm run test:all
 ```
 
-### Running Individual Components
-```bash
-# Regulatory Gateway
-python THALOS_PRIME_APP.py
+## 🔒 Security
 
-# Cognitive Engine
-python thalos_sbi_core_v6.py
+- See [SECURITY.md](SECURITY.md) for security policies and reporting vulnerabilities
+- Container images are scanned for vulnerabilities in CI/CD pipeline
+- Follow security best practices outlined in the documentation
 
-# Hyper Nextus Server
-python hyper_nextus_server.py
+## 🤝 Contributing
 
-# Perpetual Optimizer
-python perpetual_optimizer.py
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-# Compliance Scanner
-python compliance_scanner.py
-```
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-### Accessing the Interface
-Open `thalos_prime.html` in a web browser and ensure the Regulatory Gateway is running on port 5000.
+## 📝 License
 
-## Docker Deployment
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
 
-```bash
-# Build image
-docker build -t thalos-prime .
+## 📚 Documentation
 
-# Run container
-docker run -p 5000:5000 -p 5001:5001 thalos-prime
-```
+Detailed documentation is available in the [docs/](docs/) directory:
 
-## Requirements
+- [Architecture Overview](docs/architecture.md)
+- [Deployment Guide](docs/deployment.md)
+- [Configuration Reference](docs/configuration.md)
+- [API Documentation](docs/api.md)
+- [Troubleshooting](docs/troubleshooting.md)
 
-- Python 3.11+
-- Flask 3.0.0
-- Flask-SocketIO 5.3.5
-- Pydantic 2.5.3
-- NumPy 1.26.2
-- SQLAlchemy 2.0.23
-- psutil 5.9.8
+## 🆘 Support
 
-## License
+- Create an [Issue](https://github.com/XxxGHOSTX/Thalos-Prime-Directive2/issues) for bug reports or feature requests
+- Check [docs/troubleshooting.md](docs/troubleshooting.md) for common issues
 
-See LICENSE file for details.
+## 🌟 Acknowledgments
+
+Built with best practices from the cloud-native community.

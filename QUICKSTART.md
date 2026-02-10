@@ -1,226 +1,246 @@
-# THALOS PRIME Quick Start Guide
+# Quick Start Guide
+
+Get Thalos Prime Directive 2 running in under 5 minutes!
 
 ## Prerequisites
-- Python 3.11 or higher
-- pip package manager
 
-## Installation
+- Docker installed ([Get Docker](https://docs.docker.com/get-docker/))
+- Git installed
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/XxxGHOSTX/Thalos-Prime-Directive2.git
-   cd Thalos-Prime-Directive2
-   ```
+## Quick Start
 
-2. **Create a virtual environment (recommended):**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-3. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Initialize the database:**
-   ```bash
-   python thalos_database_schema.py
-   ```
-
-## Running the System
-
-### Option 1: Full Ecosystem (Recommended)
-
-Run all components using the orchestrator:
+### 1. Clone the Repository
 
 ```bash
-python deploy_server.py
+git clone https://github.com/XxxGHOSTX/Thalos-Prime-Directive2.git
+cd Thalos-Prime-Directive2
 ```
 
-This will start:
-- Regulatory Gateway (Port 5000)
-- Cognitive Engine
-- Hyper Nextus Server (Port 5001)
-- Perpetual Optimizer
-- Thalos Guard
-
-Press `Ctrl+C` to gracefully shutdown all components.
-
-### Option 2: Individual Components
-
-Run components separately in different terminals:
-
-**Terminal 1 - Regulatory Gateway:**
-```bash
-python THALOS_PRIME_APP.py
-```
-
-**Terminal 2 - Cognitive Engine:**
-```bash
-python thalos_sbi_core_v6.py
-```
-
-**Terminal 3 - Hyper Nextus Server:**
-```bash
-python hyper_nextus_server.py
-```
-
-**Terminal 4 - Perpetual Optimizer:**
-```bash
-python perpetual_optimizer.py
-```
-
-**Terminal 5 - Compliance Scanner:**
-```bash
-python compliance_scanner.py
-```
-
-## Accessing the Interface
-
-1. **Start the Regulatory Gateway** (either through deploy_server.py or directly)
-
-2. **Open the HTML interface:**
-   - Open `thalos_prime.html` in your web browser
-   - The interface will connect to `http://localhost:5000`
-   - You should see real-time CPU and memory metrics
-
-3. **Expected output:**
-   - Status indicator should show "SYNCHRONIZED" in cyan
-   - CPU percentage updates every second
-   - Memory saturation displayed as percentage
-   - Latency measurements shown
-
-## Testing the API
-
-### Send telemetry data to the gateway:
+### 2. Start with Docker Compose
 
 ```bash
-curl -X POST http://localhost:5000/api/v1/sensory \
-  -H "Content-Type: application/json" \
-  -H "X-Thalos-Inscription: test_inscription_header_32chars_minimum" \
-  -d '{
-    "thermal_index": 45.5,
-    "memory_saturation": 0.65,
-    "neural_activation": [0.1, 0.2, 0.3, 0.4, 0.5],
-    "metadata": {"source": "test"}
-  }'
+docker-compose up -d
 ```
 
-Expected response:
+That's it! The application is now running.
+
+### 3. Verify It's Working
+
+```bash
+# Check health
+curl http://localhost:8080/health
+
+# Get application info
+curl http://localhost:8080/
+
+# Check API status
+curl http://localhost:8080/api/status
+```
+
+Expected output:
 ```json
 {
-  "status": "success",
-  "ts": 1234567890.123,
-  "audit_id": "abc123def456"
+  "status": "ok",
+  "timestamp": "2024-01-01T00:00:00.000Z",
+  "uptime": 10.5,
+  "environment": "development"
 }
 ```
 
-## Docker Deployment
+### 4. View Logs
 
-### Build the image:
 ```bash
-docker build -t thalos-prime .
+docker-compose logs -f
 ```
 
-### Run the container:
+### 5. Stop the Application
+
 ```bash
-docker run -p 5000:5000 -p 5001:5001 \
-  -e THALOS_SECRET=your_secret_key_here \
-  thalos-prime
+docker-compose down
 ```
 
-### With docker-compose (optional):
+## What You Get
 
-Create `docker-compose.yml`:
-```yaml
-version: '3.8'
-services:
-  thalos-prime:
-    build: .
-    ports:
-      - "5000:5000"
-      - "5001:5001"
-    environment:
-      - THALOS_SECRET=your_secret_key_here
-    volumes:
-      - ./data:/app/data
+✅ **Running Application** on http://localhost:8080  
+✅ **Health Checks** at /health, /health/ready, /health/live  
+✅ **Metrics** at http://localhost:9090/metrics  
+✅ **API Endpoints** at /api/*  
+
+## Next Steps
+
+### Customize Configuration
+
+1. Copy environment template:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Edit `.env` with your settings:
+   ```bash
+   nano .env
+   ```
+
+3. Restart:
+   ```bash
+   docker-compose restart
+   ```
+
+### Deploy to Production
+
+See [Deployment Guide](docs/deployment.md) for:
+- Kubernetes deployment
+- Cloud provider setup (AWS, GCP, Azure)
+- CI/CD configuration
+- Production best practices
+
+### Run Tests
+
+```bash
+npm install
+npm test
 ```
 
-Run:
+### Build from Source
+
 ```bash
-docker-compose up
+# Install dependencies
+npm install
+
+# Run locally
+npm start
+
+# Development mode (auto-reload)
+npm run dev
+```
+
+## Common Commands
+
+```bash
+# View running containers
+docker ps
+
+# View application logs
+docker-compose logs -f app
+
+# Restart application
+docker-compose restart app
+
+# Execute commands in container
+docker-compose exec app sh
+
+# Remove everything
+docker-compose down -v
+```
+
+## Endpoints Quick Reference
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/` | GET | Application info |
+| `/health` | GET | Basic health check |
+| `/health/ready` | GET | Readiness probe |
+| `/health/live` | GET | Liveness probe |
+| `/api/status` | GET | API status |
+| `/api/info` | GET | Detailed info |
+| `/api/echo` | POST | Echo test endpoint |
+| `/metrics` | GET | Prometheus metrics |
+
+## Testing Endpoints
+
+### Using cURL
+
+```bash
+# Health check
+curl http://localhost:8080/health
+
+# API info
+curl http://localhost:8080/api/info
+
+# Echo test
+curl -X POST http://localhost:8080/api/echo \
+  -H "Content-Type: application/json" \
+  -d '{"message":"Hello!"}'
+```
+
+### Using HTTPie
+
+```bash
+http GET localhost:8080/health
+http POST localhost:8080/api/echo message="Hello!"
 ```
 
 ## Troubleshooting
 
-### Port already in use
-If ports 5000 or 5001 are already in use:
+### Port Already in Use
+
 ```bash
-# Find the process using the port
-lsof -i :5000
-# Kill the process or change the port in the code
+# Change port in docker-compose.yml
+ports:
+  - "8081:8080"  # Change 8080 to 8081
 ```
 
-### ModuleNotFoundError
-Ensure all dependencies are installed:
+### Container Won't Start
+
 ```bash
-pip install -r requirements.txt
+# Check logs
+docker-compose logs app
+
+# Rebuild image
+docker-compose build --no-cache
+docker-compose up -d
 ```
 
-### Database locked error
-Stop all running instances before restarting:
+### Can't Connect
+
 ```bash
-pkill -f "python.*thalos"
+# Verify container is running
+docker-compose ps
+
+# Check if port is exposed
+docker-compose port app 8080
 ```
 
-### WebSocket connection failed
-- Ensure Regulatory Gateway is running on port 5000
-- Check browser console for errors
-- Verify no CORS issues (SocketIO is configured with cors_allowed_origins="*")
+## Configuration Quick Reference
 
-## Monitoring and Logs
+Environment variables in `.env`:
 
-All components log to stdout with timestamps:
-- `[THALOS-GATEWAY]` - Regulatory Gateway
-- `[SBI-CORE]` - Cognitive Engine
-- `[HYPER-NEXTUS]` - Hyper Nextus Server
-- `[OPTIMIZER]` - Perpetual Optimizer
-- `[THALOS-GUARD]` - Compliance Scanner
+```env
+# Basic
+APP_ENV=development
+APP_PORT=8080
 
-To save logs:
-```bash
-python deploy_server.py 2>&1 | tee thalos.log
+# Logging
+LOG_LEVEL=info
+LOG_FORMAT=json
+
+# Features
+ENABLE_METRICS=true
+ENABLE_CORS=true
 ```
 
-## Development
+## Resources
 
-### Run linting:
-```bash
-flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-```
+- 📖 [Full Documentation](docs/)
+- 🏗️ [Architecture](docs/architecture.md)
+- 🚀 [Deployment Guide](docs/deployment.md)
+- 🔧 [Configuration](docs/configuration.md)
+- 📡 [API Reference](docs/api.md)
+- 🔍 [Troubleshooting](docs/troubleshooting.md)
 
-### Format code:
-```bash
-black .
-```
+## Getting Help
 
-### Run tests:
-```bash
-python -m compileall .
-```
+- 📝 [Issues](https://github.com/XxxGHOSTX/Thalos-Prime-Directive2/issues)
+- 💬 [Discussions](https://github.com/XxxGHOSTX/Thalos-Prime-Directive2/discussions)
+- 📧 Check README for contact information
 
-## Environment Variables
+## What's Next?
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `THALOS_SECRET` | Secret key for the Flask app | `primordial_entropy_key_v1_0_0` |
+1. ✅ Application is running
+2. 📖 Read the [Architecture docs](docs/architecture.md)
+3. 🔧 Customize your [Configuration](docs/configuration.md)
+4. 🚀 Plan your [Deployment](docs/deployment.md)
+5. 🤝 Check [Contributing](CONTRIBUTING.md) to get involved
 
-**Note:** Never use the default secret in production!
+---
 
-## Support
-
-For issues or questions, refer to:
-- `README.md` - General overview
-- `ARCHITECTURE.md` - System architecture details
-- GitHub Issues
+**That's it!** You now have a production-ready application running locally. 🎉
