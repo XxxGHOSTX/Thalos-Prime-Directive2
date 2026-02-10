@@ -4,9 +4,10 @@
         "**/*.js",
         "!node_modules/**",
         "!coverage/**",
+        "!**/*.test.js",
+        "!**/__tests__/**",
         "!eslint.config.js",
-        "!jest.config.json",
-        "!**/*.test.js"
+        "!jest.config.json"
     ],
-    "coveragePathIgnorePatterns": ["/node_modules/", "/coverage/"]
+    "coveragePathIgnorePatterns": ["/node_modules/", "/coverage/", "\\.test\\.js$"]
 }
