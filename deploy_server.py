@@ -27,12 +27,12 @@ class EcosystemController:
         """Initiates a designated Thalos module as an isolated subprocess."""
         logger.info(f"Initialization of the {name} stratum is commencing...")
         try:
+            # Inherit stdout/stderr to prevent pipe buffer issues with long-running services
             process = subprocess.Popen(
                 command,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
+                stdout=None,  # Inherit stdout
+                stderr=None,  # Inherit stderr
                 text=True,
-                bufsize=1,
             )
             self.processes.append((name, process))
             return process
@@ -99,6 +99,19 @@ if __name__ == "__main__":
     controller.start_module("Thalos_Guard", [sys.executable, "compliance_scanner.py"])
 
     # Stratum 4: Persistence Layer (Database Initialization)
-    subprocess.run([sys.executable, "thalos_database_schema.py"])
+    logger.info("Initializing Persistence Stratum (Database Schema)...")
+    try:
+        subprocess.run(
+            [sys.executable, "thalos_database_schema.py"],
+            check=True,
+        )
+        logger.info("Database schema initialization completed successfully.")
+    except subprocess.CalledProcessError as e:
+        logger.error(
+            f"Database schema initialization failed with exit code {e.returncode}. "
+            "Aborting THALOS PRIME Ecosystem startup."
+        )
+        controller.shutdown()
+        sys.exit(1)
 
     controller.monitor()

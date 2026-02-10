@@ -36,6 +36,7 @@ class HyperNextusProtocol:
         finally:
             logger.info(f"Closing conduit with {addr}")
             writer.close()
+            await writer.wait_closed()
 
 
 async def main():

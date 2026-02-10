@@ -78,7 +78,7 @@ docker run -p 5000:5000 -p 5001:5001 thalos-prime
 - Pydantic 2.5.3
 - NumPy 1.26.2
 - SQLAlchemy 2.0.23
-- psutil 5.9.6
+- psutil 5.9.8
 
 ## License
 

@@ -50,7 +50,7 @@ class PredictiveIntentEngine:
 
     async def predict_trajectory(self, stimuli: List[float]) -> Tuple[float, float]:
         """Calculates intent trajectories and confidence intervals through asynchronous execution."""
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         try:
             trajectory_data = await loop.run_in_executor(
                 self.executor, self._calculate_complex_heuristic, stimuli
@@ -59,6 +59,11 @@ class PredictiveIntentEngine:
         except Exception as e:
             logger.error(f"Heuristic calculation failure reported: {e}")
             return 0.0, 0.0
+
+    def shutdown(self):
+        """Gracefully shuts down the executor to avoid leaving worker processes running."""
+        self.executor.shutdown(wait=True)
+        logger.info("Predictive Intent Engine executor shutdown complete.")
 
     @staticmethod
     def _calculate_complex_heuristic(data: List[float]) -> Tuple[float, float]:
@@ -100,28 +105,32 @@ async def persistent_cognitive_cycle():
 
     logger.info("Cognitive Engine entering persistent execution state.")
 
-    while True:
-        try:
-            # In a live system, this ingests real data from Port 5000 via IPC
-            # Here stochastic nature of biological input is simulated
-            mock_stimuli = np.random.rand(5).tolist()
+    try:
+        while True:
+            try:
+                # In a live system, this ingests real data from Port 5000 via IPC
+                # Here stochastic nature of biological input is simulated
+                mock_stimuli = np.random.rand(5).tolist()
 
-            trajectory, confidence = await engine.predict_trajectory(mock_stimuli)
+                trajectory, confidence = await engine.predict_trajectory(mock_stimuli)
 
-            if confidence > 0.90:
-                logger.info(
-                    f"SYMBIOSIS ACHIEVED: High-Confidence Trajectory [{trajectory:.4f}]"
-                )
-                # This would trigger a write to the HeuristicWeightRegistry
+                if confidence > 0.90:
+                    logger.info(
+                        f"SYMBIOSIS ACHIEVED: High-Confidence Trajectory [{trajectory:.4f}]"
+                    )
+                    # This would trigger a write to the HeuristicWeightRegistry
 
-            bridge.update_weights(trajectory - 0.5)
+                bridge.update_weights(trajectory - 0.5)
 
-            # Maintenance of the biocomputing rhythm (heartbeat)
-            await asyncio.sleep(2.0)
+                # Maintenance of the biocomputing rhythm (heartbeat)
+                await asyncio.sleep(2.0)
 
-        except Exception as e:
-            logger.error(f"Cognitive cycle anomaly: {e}")
-            await asyncio.sleep(5.0)  # Error backoff
+            except Exception as e:
+                logger.error(f"Cognitive cycle anomaly: {e}")
+                await asyncio.sleep(5.0)  # Error backoff
+    finally:
+        # Cleanup on shutdown
+        engine.shutdown()
 
 
 if __name__ == "__main__":

@@ -8,7 +8,6 @@
 import os
 import re
 import logging
-import sys
 import time
 
 logging.basicConfig(
@@ -33,19 +32,24 @@ class ThalosGuard:
         logger.info("Initiating deep-scan of local sector...")
         compliance_score = 100
 
-        for filename in os.listdir(self.root_dir):
-            if filename.endswith(".py"):
-                if not self._validate_file(filename):
-                    compliance_score -= COMPLIANCE_PENALTY
+        for root, dirs, files in os.walk(self.root_dir):
+            # Skip hidden directories and __pycache__
+            dirs[:] = [d for d in dirs if not d.startswith(".") and d != "__pycache__"]
+
+            for filename in files:
+                if filename.endswith(".py"):
+                    filepath = os.path.join(root, filename)
+                    if not self._validate_file(filepath, filename):
+                        compliance_score -= COMPLIANCE_PENALTY
 
         logger.info(f"Scan complete. Ecosystem Compliance Score: {compliance_score}%")
 
-    def _validate_file(self, filename: str) -> bool:
+    def _validate_file(self, filepath: str, filename: str) -> bool:
         """Checks for 'snake_case' filenames and Inscriptional Headers."""
         # Check 1: Filename Convention
         name_root = filename[:-3]
         if (
-            not self.snake_case_pattern.match(name_root) and not filename.isupper()
+            not self.snake_case_pattern.match(name_root) and not name_root.isupper()
         ):  # Allow UPPERCASE constants
             # Special exception for the main APP file which is UPPERCASE
             if filename != "THALOS_PRIME_APP.py":
@@ -56,9 +60,9 @@ class ThalosGuard:
 
         # Check 2: Inscriptional Header presence
         try:
-            with open(filename, "r", encoding="utf-8") as f:
+            with open(filepath, "r", encoding="utf-8") as f:
                 content = f.read(500)  # Read first 500 chars
-                if "THALOS PRIME" not in content and "################" not in content:
+                if "THALOS PRIME" not in content or "################" not in content:
                     logger.warning(
                         f"Integrity Violation: {filename} missing Inscriptional Header."
                     )

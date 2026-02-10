@@ -50,7 +50,8 @@
         </div>
     </div>
     <script>
-        const socket = io('http://localhost:5000');
+        // Derive Socket.IO URL from current location to support various deployment scenarios
+        const socket = io(window.location.origin);
         const neuralBar = document.getElementById('neural-bar');
         const thermalBar = document.getElementById('thermal-bar');
         const connStatus = document.getElementById('conn-status');
