@@ -1,18 +1,12 @@
 const request = require('supertest');
 
 describe('Server Tests', () => {
-    let app, server;
+    let app;
 
     beforeAll(() => {
-        // Import the server module
+        // Import the app without starting the server
         const serverModule = require('./server');
         app = serverModule.app;
-        server = serverModule.server;
-    });
-
-    afterAll((done) => {
-        // Close the server after tests
-        server.close(done);
     });
 
     test('should respond to GET request at root path', async () => {

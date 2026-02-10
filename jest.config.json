@@ -5,7 +5,8 @@
         "!node_modules/**",
         "!coverage/**",
         "!eslint.config.js",
-        "!jest.config.json"
+        "!jest.config.json",
+        "!**/*.test.js"
     ],
     "coveragePathIgnorePatterns": ["/node_modules/", "/coverage/"]
 }

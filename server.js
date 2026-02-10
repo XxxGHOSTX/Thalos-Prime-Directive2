@@ -23,10 +23,21 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Start server
-const server = app.listen(PORT, () => {
-    console.log(`Thalos Prime Directive 2 server running on port ${PORT}`);
-});
+// Start server only when run directly
+let server;
 
-// Export for testing
-module.exports = { app, server };
+function start(port = PORT) {
+    if (!server) {
+        server = app.listen(port, () => {
+            console.log(`Thalos Prime Directive 2 server running on port ${port}`);
+        });
+    }
+    return server;
+}
+
+if (require.main === module) {
+    start();
+}
+
+// Export for testing and programmatic use
+module.exports = { app, start };
