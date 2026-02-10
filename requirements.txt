@@ -4,6 +4,6 @@ pydantic==2.5.3
 psutil==5.9.8
 numpy==1.26.2
 sqlalchemy==2.0.23
-python-socketio==5.10.0
+python-socketio==5.14.0
 gevent==23.9.1
 gevent-websocket==0.10.1
