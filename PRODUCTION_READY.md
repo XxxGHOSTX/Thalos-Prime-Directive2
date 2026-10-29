@@ -1,3 +1,7 @@
+> **Status correction — 29 October 2026:** This checklist contains historical claims that are not a verified current production attestation. The present security branch is a proposal and has not been merged or deployed. The API now requires an explicit bearer token in the proposed code. Production readiness, successful deployments, all security controls, and the reported test coverage must be independently reproduced before being claimed. Do not expose the application publicly until security review and deployment validation pass.
+
+---
+
 # Production Readiness Checklist
 
 This document validates that Thalos Prime Directive 2 is production-ready.
