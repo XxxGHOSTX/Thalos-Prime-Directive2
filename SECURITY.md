@@ -170,3 +170,14 @@ The current proposed hardening work is on branch `security/use-safe-example-cors
 - limits request bodies to 1 MiB.
 
 This change has not been merged or deployed and is not a production security certification. Configure a unique strong token in a secret manager or secure runtime environment, run CI, and review all Kubernetes/ingress deployment settings before remote access. Keep `THALOS_API_TOKEN` out of Git, screenshots, logs, issue comments, and public configuration files.
+
+
+## Current security review — 29 October 2026
+
+The repository's open remediation proposal is [PR #13](https://github.com/XxxGHOSTX/Thalos-Prime-Directive2/pull/13). It is not merged or deployed.
+
+The proposed branch protects `/api/*` and `/metrics` with a bearer token and rejects missing or short tokens. The token must be unique, high-entropy, at least 32 bytes, and supplied through a secure runtime environment or secret manager. Never commit the real value. CORS restricts browser origins but is not authentication.
+
+The provided Compose file now publishes port 8080 and metrics port 9090 on host loopback. Do not remove the loopback address without a documented network/security review. For Kubernetes or any other deployment, separately verify ingress, service exposure, TLS, network policy, and secret injection.
+
+Production readiness has not been established. See `PRODUCTION_READY.md`; the earlier checklist has been archived as historical claims, not a current certification.
