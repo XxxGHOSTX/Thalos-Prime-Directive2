@@ -1,7 +1,7 @@
 {
   "name": "thalos-prime-directive2",
   "version": "2.0.0",
-  "description": "Production-ready, cloud-native application framework",
+  "description": "Development-stage Thalos Prime Directive 2 API service",
   "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js",
