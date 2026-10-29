@@ -158,3 +158,15 @@ We appreciate the security research community and will acknowledge researchers w
 - Project documentation
 
 Thank you for helping keep Thalos Prime Directive 2 and its users safe!
+
+
+## Security status update — 29 October 2026
+
+The current proposed hardening work is on branch `security/use-safe-example-cors-origins` and PR #13. The branch:
+- rejects wildcard CORS origins and requires explicit origins in production;
+- protects `/api/*` and `/metrics` with an explicit bearer token;
+- returns HTTP 503 if `THALOS_API_TOKEN` is missing or shorter than 32 bytes and HTTP 401 for invalid/missing credentials;
+- binds Docker-published ports to host loopback by default;
+- limits request bodies to 1 MiB.
+
+This change has not been merged or deployed and is not a production security certification. Configure a unique strong token in a secret manager or secure runtime environment, run CI, and review all Kubernetes/ingress deployment settings before remote access. Keep `THALOS_API_TOKEN` out of Git, screenshots, logs, issue comments, and public configuration files.
