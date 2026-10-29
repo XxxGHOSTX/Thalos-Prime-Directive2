@@ -16,12 +16,28 @@ const logger = createLogger();
 // Security middleware
 app.use(helmet());
 
-// CORS configuration
-const corsOptions = {
-  origin: process.env.ALLOWED_ORIGINS || '*',
+// CORS configuration: allow only explicitly configured origins.
+const appEnv = String(process.env.APP_ENV || 'development').trim().toLowerCase();
+const defaultOrigins =
+  appEnv === 'production'
+    ? ''
+    : 'http://localhost:3000,http://127.0.0.1:3000';
+const rawAllowedOrigins = process.env.ALLOWED_ORIGINS ?? defaultOrigins;
+const allowedOrigins = rawAllowedOrigins
+  .split(',')
+  .map(origin => origin.trim())
+  .filter(Boolean);
+
+if (allowedOrigins.length === 0) {
+  throw new Error('ALLOWED_ORIGINS must contain at least one explicit origin.');
+}
+if (allowedOrigins.includes('*')) {
+  throw new Error('ALLOWED_ORIGINS must be an explicit allowlist; wildcard origins are prohibited.');
+}
+app.use(cors({
+  origin: allowedOrigins,
   optionsSuccessStatus: 200
-};
-app.use(cors(corsOptions));
+}));
 
 // Rate limiting
 const limiter = rateLimit({
@@ -102,7 +118,7 @@ app.use((err, req, res, _next) => {
 // Start server only if not required as a module
 if (require.main === module) {
   const PORT = process.env.APP_PORT || 8080;
-  const HOST = process.env.APP_HOST || '0.0.0.0';
+  const HOST = process.env.APP_HOST || '127.0.0.1';
 
   const server = app.listen(PORT, HOST, () => {
     logger.info(`Thalos Prime Directive 2 started on ${HOST}:${PORT}`);
