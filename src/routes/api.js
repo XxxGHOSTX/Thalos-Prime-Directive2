@@ -14,7 +14,7 @@ router.get('/status', (req, res) => {
 router.get('/info', (req, res) => {
   res.json({
     name: 'Thalos Prime Directive 2',
-    description: 'Production-ready cloud-native application',
+    description: 'Development-stage API service; production readiness requires deployment-specific verification',
     features: [
       'Health monitoring',
       'Prometheus metrics',
