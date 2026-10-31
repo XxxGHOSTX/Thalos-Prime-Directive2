@@ -9,7 +9,7 @@ services:
     # Published ports are host-loopback-only. Do not remove 127.0.0.1 without review.
     ports:
       - "127.0.0.1:8080:8080"
-      - "127.0.0.1:9090:9090"
+      - "127.0.0.1:9090:8080"
     environment:
       - APP_ENV=development
       - APP_PORT=8080
@@ -18,7 +18,7 @@ services:
       - LOG_LEVEL=info
       - LOG_FORMAT=json
       - ENABLE_METRICS=true
-      - METRICS_PORT=9090
+      # /metrics shares the main app listener on container port 8080.
       - ENABLE_HEALTH_CHECKS=true
       - ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
       - THALOS_API_TOKEN
