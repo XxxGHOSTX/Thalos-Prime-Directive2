@@ -43,3 +43,14 @@ Do not merge when checks are failed, skipped unexpectedly, or unavailable for re
 ## Scope and verification
 
 The API authentication and CORS changes are committed to a review branch and are not merged or deployed. No deployment secret has been created or rotated by this change. No live endpoint, production ingress, traffic, Kubernetes cluster, or active deployment was independently inspected. Production readiness is therefore not established.
+
+
+## Local browser UI authentication
+
+The static browser UI does not implement production user login or a secure session exchange. Never put `THALOS_API_TOKEN` into JavaScript, HTML, browser storage, query strings, or a frontend bundle.
+
+For local development only, the API may bypass the bearer-token check when `APP_ENV` is explicitly set to `development`, `dev`, or `test` and `THALOS_AUTH_DISABLED=1`. Do not enable this in production, staging, CI deployments, or environments with an unknown mode.
+
+Before production browser access, implement OIDC-backed user sessions or a trusted identity-aware gateway. The gateway must authenticate users, remove any client-supplied backend authorization header, inject the backend token server-side, and enforce administrator-only access to privileged paths. The service token alone does not provide per-user identity or role-based authorization.
+
+The browser's Stop Server control is disabled. Use the trusted host, container orchestrator, or deployment control plane to stop the process.
