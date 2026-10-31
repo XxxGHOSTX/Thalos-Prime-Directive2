@@ -16,7 +16,8 @@ CORS is not authentication. Keep bearer authentication, TLS, rate limits, and ne
 - The application defaults to loopback binding when launched directly.
 - The Docker image sets `APP_HOST=0.0.0.0` inside the container; this is an internal container bind. The Compose host-published HTTP and metrics ports are loopback-only.
 - The Kubernetes ConfigMap sample contains an example HTTPS origin, not the real production origin. Replace it with the exact approved hostname.
-- `k8s/secret.yaml` is a placeholder template and does not configure a valid API token. Do not apply it as a live production secret. Create the secret from a secure store or runtime secret injector.
+- `k8s/secret.yaml` is deliberately an empty template and does not configure a valid API token. Do not apply it as a live production secret. Create the Kubernetes Secret through a secure store or runtime secret injector. If using a protected file, store it outside the repository with restrictive permissions and create the Secret from that file; never place the token in a checked-in manifest or shell command history.
+- The deployment does not advertise an unauthenticated Prometheus scrape. Before enabling scraping, configure the monitoring system to authenticate to the protected `/metrics` endpoint and keep that endpoint private.
 
 ## Operational checks before exposure
 
