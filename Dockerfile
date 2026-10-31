@@ -1,5 +1,5 @@
 # Build stage
-FROM node:18-alpine AS builder
+FROM node:24-alpine AS builder
 
 WORKDIR /app
 
@@ -10,7 +10,7 @@ COPY package*.json ./
 RUN npm ci --omit=dev
 
 # Production stage
-FROM node:18-alpine
+FROM node:24-alpine
 
 # Set production environment
 ENV NODE_ENV=production \
