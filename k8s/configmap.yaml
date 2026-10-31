@@ -15,3 +15,6 @@ data:
   ENABLE_CORS: "true"
   RATE_LIMIT_WINDOW: "900000"
   RATE_LIMIT_MAX_REQUESTS: "100"
+  # Replace with the exact HTTPS frontend origin approved for your deployment.
+  # Never use a wildcard. Verify this setting before deploying the manifest.
+  ALLOWED_ORIGINS: "https://your-approved-frontend.example"

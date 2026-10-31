@@ -14,7 +14,7 @@ spec:
     protocol: TCP
   - name: metrics
     port: 9090
-    targetPort: 9090
+    targetPort: 8080
     protocol: TCP
   selector:
     app: thalos-prime

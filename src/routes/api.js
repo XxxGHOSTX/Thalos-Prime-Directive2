@@ -14,13 +14,13 @@ router.get('/status', (req, res) => {
 router.get('/info', (req, res) => {
   res.json({
     name: 'Thalos Prime Directive 2',
-    description: 'Production-ready cloud-native application',
+    description: 'Development-stage API service with configurable access controls',
     features: [
       'Health monitoring',
       'Prometheus metrics',
       'Docker containerization',
       'Kubernetes deployment',
-      'Security best practices'
+      'Bearer-token protected API routes'
     ],
     documentation: 'https://github.com/XxxGHOSTX/Thalos-Prime-Directive2'
   });

@@ -158,3 +158,12 @@ We appreciate the security research community and will acknowledge researchers w
 - Project documentation
 
 Thank you for helping keep Thalos Prime Directive 2 and its users safe!
+
+
+## Current security review — 31 October 2026
+
+A focused API/CORS hardening proposal is available in [draft PR #31](https://github.com/XxxGHOSTX/Thalos-Prime-Directive2/pull/31), branch `security/secure-api-and-safe-config-2026-10-31`. It is not merged or deployed and is not a production security certification.
+
+The draft requires a high-entropy bearer token for API and metrics routes, permits a local bypass only when `APP_ENV` is explicitly development/test, requires HTTPS-only exact CORS origins in production, and updates the container runtime to Node 24 LTS. It also documents that the static browser UI does not yet provide production user-session authentication.
+
+The latest GitHub checks are failing or undiagnosed; inspect the actual Actions logs before merging. Do not bypass failed checks. Store the API token in a secret manager or secure runtime injection and never place it in frontend code or a public configuration file.

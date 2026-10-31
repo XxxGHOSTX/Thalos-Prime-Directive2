@@ -5,9 +5,7 @@ const router = express.Router();
 router.get('/', (req, res) => {
   res.json({
     status: 'ok',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime(),
-    environment: process.env.APP_ENV || 'development'
+    timestamp: new Date().toISOString()
   });
 });
 
@@ -44,9 +42,7 @@ router.get('/live', (req, res) => {
   // This should be a lightweight check
   res.json({
     status: 'alive',
-    timestamp: new Date().toISOString(),
-    pid: process.pid,
-    memory: process.memoryUsage()
+    timestamp: new Date().toISOString()
   });
 });
 
