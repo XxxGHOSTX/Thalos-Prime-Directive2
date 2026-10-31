@@ -80,6 +80,17 @@ app.use((req, res, next) => {
 // All API endpoints require a strong configured bearer token.
 // This does not replace HTTPS, network restrictions, or secret rotation.
 function requireApiToken(req, res, next) {
+  const environment = String(process.env.APP_ENV || '').trim().toLowerCase();
+  if (process.env.THALOS_AUTH_DISABLED === '1') {
+    if (['development', 'dev', 'test'].includes(environment)) {
+      return next();
+    }
+    return res.status(503).json({
+      error: 'Protected API unavailable',
+      message: 'Authentication bypass is permitted only when APP_ENV is explicitly development, dev, or test.'
+    });
+  }
+
   const expected = Buffer.from(process.env.THALOS_API_TOKEN || '', 'utf8');
   if (expected.length < 32) {
     return res.status(503).json({
