@@ -13,7 +13,8 @@ RUN npm ci --omit=dev
 FROM node:18-alpine
 
 # Set production environment
-ENV NODE_ENV=production
+ENV NODE_ENV=production \
+    APP_HOST=0.0.0.0
 
 # Create app user
 RUN addgroup -g 1001 -S nodejs && \
