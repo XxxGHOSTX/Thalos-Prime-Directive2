@@ -1,5 +1,5 @@
 flask==3.0.0
-flask-socketio==5.3.5
+flask-socketio==5.7.0
 pydantic==2.5.3
 psutil==5.9.8
 numpy==1.26.2
