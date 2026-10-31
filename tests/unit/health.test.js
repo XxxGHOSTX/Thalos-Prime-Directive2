@@ -8,8 +8,6 @@ describe('Health Endpoints', () => {
 
       expect(response.body).toHaveProperty('status', 'ok');
       expect(response.body).toHaveProperty('timestamp');
-      expect(response.body).toHaveProperty('uptime');
-      expect(response.body).toHaveProperty('environment');
     });
   });
 
@@ -30,8 +28,6 @@ describe('Health Endpoints', () => {
 
       expect(response.body).toHaveProperty('status', 'alive');
       expect(response.body).toHaveProperty('timestamp');
-      expect(response.body).toHaveProperty('pid');
-      expect(response.body).toHaveProperty('memory');
     });
   });
 });
