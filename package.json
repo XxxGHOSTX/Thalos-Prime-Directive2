@@ -1,7 +1,7 @@
 {
   "name": "thalos-prime-directive2",
   "version": "2.0.0",
-  "description": "Production-ready, cloud-native application framework",
+  "description": "Development-stage cloud application framework with security controls under review",
   "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js",
@@ -18,7 +18,6 @@
   "keywords": [
     "cloud-native",
     "kubernetes",
-    "production-ready",
     "microservices",
     "docker"
   ],
@@ -41,8 +40,8 @@
     "supertest": "^6.3.3"
   },
   "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=9.0.0"
+    "node": ">=24.0.0",
+    "npm": ">=10.0.0"
   },
   "jest": {
     "testEnvironment": "node",
