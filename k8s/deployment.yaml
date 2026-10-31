@@ -16,15 +16,14 @@ spec:
       labels:
         app: thalos-prime
         version: v2.0.0
-      annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "9090"
-        prometheus.io/path: "/metrics"
     spec:
+      automountServiceAccountToken: false
       securityContext:
         runAsNonRoot: true
         runAsUser: 1001
         fsGroup: 1001
+        seccompProfile:
+          type: RuntimeDefault
       containers:
       - name: thalos-prime
         image: thalos-prime:latest
