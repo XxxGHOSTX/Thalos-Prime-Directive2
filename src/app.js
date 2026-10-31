@@ -37,7 +37,6 @@ const invalidOrigins = allowedOrigins.filter(origin => {
   try {
     const parsed = new URL(origin);
     return !['http:', 'https:'].includes(parsed.protocol)
-      || (isProduction && parsed.protocol !== 'https:')
       || parsed.origin !== origin
       || Boolean(parsed.username || parsed.password);
   } catch {
@@ -46,6 +45,9 @@ const invalidOrigins = allowedOrigins.filter(origin => {
 });
 if (invalidOrigins.length > 0) {
   throw new Error('ALLOWED_ORIGINS must contain exact http:// or https:// origins without paths.');
+}
+if (isProduction && allowedOrigins.some(origin => new URL(origin).protocol !== 'https:')) {
+  throw new Error('Production CORS origins must use HTTPS.');
 }
 app.use(cors({ origin: allowedOrigins, optionsSuccessStatus: 200 }));
 
